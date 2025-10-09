@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Leaf,
@@ -24,34 +24,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-// Dados mockados de usuário
-type UserType = "citizen" | "waste_picker" | "artisan" | "business" | "municipal";
-interface User {
-  full_name: string;
-  user_type: UserType;
-}
-
-const mockUsers: User[] = [
-  { full_name: "Gabriel Ricco", user_type: "citizen" },
-  { full_name: "Maria Coletora", user_type: "waste_picker" },
-  { full_name: "João Artesão", user_type: "artisan" },
-  { full_name: "Empresa Verde", user_type: "business" },
-  { full_name: "Prefeitura Local", user_type: "municipal" },
-];
+import { useUser } from "@/context/user-context-helpers";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<User | null>(mockUsers[0]);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogin = () => {
-    setCurrentUser(mockUsers[0]);
-  };
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const { currentUser, logout } = useUser();
 
   const handleLogout = () => {
-    setCurrentUser(null);
+    logout();
     navigate("/");
   };
 
@@ -218,7 +200,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </>
               ) : (
                 <Button
-                  onClick={handleLogin}
+                  onClick={() => navigate("/login")}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   Entrar
