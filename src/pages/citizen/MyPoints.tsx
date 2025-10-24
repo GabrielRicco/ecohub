@@ -15,25 +15,15 @@ import {
 import { format } from "date-fns";
 import type { User } from "@/types/User";
 import { useUser } from "@/context/user-context-helpers";
-
-const MATERIAL_COLORS = {
-  plastic: "bg-blue-100 text-blue-700",
-  glass: "bg-green-100 text-green-700", 
-  cardboard: "bg-yellow-100 text-yellow-700",
-  metal: "bg-gray-100 text-gray-700",
-  organic: "bg-orange-100 text-orange-700",
-  electronics: "bg-purple-100 text-purple-700",
-  textiles: "bg-pink-100 text-pink-700"
-};
+import { MATERIAL_COLORS } from "../CollectionMap";
 
 const POINT_VALUES = {
-  plastic: 10,
-  glass: 15,
-  cardboard: 8,
+  plástico: 10,
+  vidro: 15,
   metal: 20,
-  organic: 5,
-  electronics: 25,
-  textiles: 12
+  orgânico: 5,
+  eletrônicos: 25,
+  têxteis: 12
 };
 
 type Deposit = {
@@ -67,13 +57,12 @@ export default function MyPoints() {
     });
 
     const materialCounts: Record<keyof typeof MATERIAL_COLORS, number> = {
-      plastic: 0,
-      glass: 0,
-      cardboard: 0,
+      plástico: 0,
+      vidro: 0,
       metal: 0,
-      organic: 0,
-      electronics: 0,
-      textiles: 0
+      orgânico: 0,
+      eletrônicos: 0,
+      têxteis: 0
     };
     deposits.forEach((deposit) => {
       materialCounts[deposit.material_type] = (materialCounts[deposit.material_type] || 0) + 1;
@@ -102,14 +91,14 @@ export default function MyPoints() {
       const userDeposits: Deposit[] = [
         {
           id: 1,
-          material_type: "plastic",
+          material_type: "plástico",
           created_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
           points_earned: 10,
           quantity: 2
         },
         {
           id: 2,
-          material_type: "glass",
+          material_type: "vidro",
           created_date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
           points_earned: 15,
           quantity: 1
@@ -123,14 +112,14 @@ export default function MyPoints() {
         },
         {
           id: 4,
-          material_type: "plastic",
+          material_type: "plástico",
           created_date: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
           points_earned: 10,
           quantity: 1
         },
         {
           id: 5,
-          material_type: "glass",
+          material_type: "vidro",
           created_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
           points_earned: 15,
           quantity: 2

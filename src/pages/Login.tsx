@@ -70,6 +70,14 @@ const mockUsers: User[] = [
   },
 ];
 
+const userTypeLabels: Record<User["user_type"], string> = {
+  citizen: "Cidadão",
+  waste_picker: "Coletor(a)",
+  artisan: "Artesão",
+  business: "Empresa",
+  municipal: "Prefeitura",
+};
+
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useUser();
@@ -91,7 +99,7 @@ export default function Login() {
               className="w-full flex items-center justify-between px-4 py-3 border rounded-lg hover:bg-green-50 transition"
             >
               <span className="font-medium">{user.full_name}</span>
-              <span className="text-xs text-gray-500 capitalize">{user.user_type.replace("_", " ")}</span>
+              <span className="text-xs text-gray-500 capitalize">{userTypeLabels[user.user_type]}</span>
             </button>
           ))}
         </div>

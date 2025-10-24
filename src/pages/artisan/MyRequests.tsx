@@ -48,7 +48,7 @@ export default function MyRequests() {
     const mockRequests: MaterialRequestType[] = [
       {
         id: 1,
-        material_type: "plastic",
+        material_type: "plástico",
         quantity_needed: 10,
         purpose: "Fazer vasos reciclados para feira",
         contact_info: "meuemail@email.com",
@@ -58,7 +58,7 @@ export default function MyRequests() {
       },
       {
         id: 2,
-        material_type: "glass",
+        material_type: "vidro",
         quantity_needed: 5,
         purpose: "Criar luminárias artesanais",
         contact_info: "meuemail@email.com",
@@ -68,7 +68,7 @@ export default function MyRequests() {
       },
       {
         id: 3,
-        material_type: "cardboard",
+        material_type: "eletrônicos",
         quantity_needed: 20,
         purpose: "Montar embalagens personalizadas",
         contact_info: "meuemail@email.com",

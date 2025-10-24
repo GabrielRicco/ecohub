@@ -15,17 +15,7 @@ import {
   Package
 } from "lucide-react";
 import { useUser } from "@/context/user-context-helpers";
-
-const MATERIAL_COLORS = {
-  plastic: "bg-blue-100 text-blue-700",
-  glass: "bg-green-100 text-green-700", 
-  cardboard: "bg-yellow-100 text-yellow-700",
-  metal: "bg-gray-100 text-gray-700",
-  organic: "bg-orange-100 text-orange-700",
-  electronics: "bg-purple-100 text-purple-700",
-  textiles: "bg-pink-100 text-pink-700"
-};
-
+import { MATERIAL_COLORS } from "../CollectionMap";
 
 type MaterialRequestType = {
   id: number;
@@ -65,7 +55,7 @@ export default function MaterialMarketplace() {
     const mockRequests: MaterialRequestType[] = [
       {
         id: 1,
-        material_type: "plastic",
+        material_type: "plástico",
         quantity_needed: 10,
         purpose: "Fazer vasos reciclados para feira",
         contact_info: "artesao1@email.com",
@@ -73,7 +63,7 @@ export default function MaterialMarketplace() {
       },
       {
         id: 2,
-        material_type: "glass",
+        material_type: "vidro",
         quantity_needed: 5,
         purpose: "Criar luminárias artesanais",
         contact_info: "artesao2@email.com",
@@ -81,7 +71,7 @@ export default function MaterialMarketplace() {
       },
       {
         id: 3,
-        material_type: "cardboard",
+        material_type: "eletrônicos",
         quantity_needed: 20,
         purpose: "Montar embalagens personalizadas",
         contact_info: "artesao3@email.com",
@@ -91,11 +81,11 @@ export default function MaterialMarketplace() {
 
     // Mock: Materiais disponíveis
     const mockMaterials: MaterialDeposit[] = [
-      { id: 101, material_type: "plastic", quantity: 15, verified: true },
-      { id: 102, material_type: "glass", quantity: 8, verified: true },
-      { id: 103, material_type: "cardboard", quantity: 30, verified: true },
+      { id: 101, material_type: "plástico", quantity: 15, verified: true },
+      { id: 102, material_type: "vidro", quantity: 8, verified: true },
+      { id: 103, material_type: "eletrônicos", quantity: 30, verified: true },
       { id: 104, material_type: "metal", quantity: 5, verified: true },
-      { id: 105, material_type: "textiles", quantity: 12, verified: true }
+      { id: 105, material_type: "têxteis", quantity: 12, verified: true }
     ];
 
     setRequests(mockRequests);
@@ -223,7 +213,7 @@ export default function MaterialMarketplace() {
               />
             </div>
             <div className="flex gap-2 flex-wrap">
-              {["", "plastic", "glass", "cardboard", "metal", "textiles"].map((material) => (
+              {["", "plástico", "vidro", "metal", "eletrônicos", "têxteis"].map((material) => (
                 <Button
                   key={material}
                   variant={filterMaterial === material ? "default" : "outline"}

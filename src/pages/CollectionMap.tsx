@@ -28,14 +28,13 @@ type UserLocation = {
   lng: number;
 };
 
-const MATERIAL_COLORS = {
-  plastic: "bg-blue-100 text-blue-700",
-  glass: "bg-green-100 text-green-700", 
-  cardboard: "bg-yellow-100 text-yellow-700",
+export const MATERIAL_COLORS = {
+  plástico: "bg-blue-100 text-blue-700",
+  vidro: "bg-green-100 text-green-700", 
   metal: "bg-gray-100 text-gray-700",
-  organic: "bg-orange-100 text-orange-700",
-  electronics: "bg-purple-100 text-purple-700",
-  textiles: "bg-pink-100 text-pink-700"
+  orgânico: "bg-orange-100 text-orange-700",
+  eletrônicos: "bg-purple-100 text-purple-700",
+  têxteis: "bg-pink-100 text-pink-700"
 };
 
 const STATUS_COLORS = {
@@ -63,7 +62,7 @@ export default function CollectionMap() {
       address: "Rua das Flores, 123, Centro",
       latitude: -23.55052,
       longitude: -46.633308,
-      accepted_materials: ["plastic", "glass", "cardboard"],
+      accepted_materials: ["plástico", "vidro"],
       status: "active",
       capacity_level: 45,
       operating_hours: "08:00 - 18:00",
@@ -74,7 +73,7 @@ export default function CollectionMap() {
       address: "Av. Brasil, 456, Norte",
       latitude: -23.54052,
       longitude: -46.623308,
-      accepted_materials: ["metal", "electronics"],
+      accepted_materials: ["metal", "eletrônicos", "têxteis"],
       status: "full",
       capacity_level: 98,
       operating_hours: "09:00 - 17:00",
@@ -85,7 +84,7 @@ export default function CollectionMap() {
       address: "Rua Verde, 789, Sul",
       latitude: -23.56052,
       longitude: -46.643308,
-      accepted_materials: ["organic", "glass", "plastic"],
+      accepted_materials: ["orgânico", "vidro", "plástico"],
       status: "maintenance",
       capacity_level: 60,
       operating_hours: "07:00 - 19:00",
@@ -197,7 +196,7 @@ export default function CollectionMap() {
               />
             </div>
             <div className="flex gap-2 flex-wrap">
-              {["", "plastic", "glass", "cardboard", "metal", "electronics"].map((material) => (
+              {["", "plástico", "vidro", "metal", "eletrônicos", "têxteis"].map((material) => (
                 <Button
                   key={material}
                   variant={filterMaterial === material ? "default" : "outline"}

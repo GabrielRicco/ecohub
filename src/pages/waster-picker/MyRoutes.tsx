@@ -111,7 +111,7 @@ export default function MyRoutes() {
     const mockDeposits = [
       {
         id: 101,
-        material_type: "plastic",
+        material_type: "plástico",
         created_date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
         quantity: 3,
         collection_point_id: 1,
@@ -120,7 +120,7 @@ export default function MyRoutes() {
       },
       {
         id: 102,
-        material_type: "glass",
+        material_type: "vidro",
         created_date: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
         quantity: 2,
         collection_point_id: 2,
@@ -129,7 +129,7 @@ export default function MyRoutes() {
       },
       {
         id: 103,
-        material_type: "cardboard",
+        material_type: "eletrônicos",
         created_date: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
         quantity: 5,
         collection_point_id: 3,

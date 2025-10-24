@@ -13,16 +13,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import { format } from "date-fns";
-
-const MATERIAL_COLORS = {
-  plastic: "bg-blue-100 text-blue-700",
-  glass: "bg-green-100 text-green-700", 
-  cardboard: "bg-yellow-100 text-yellow-700",
-  metal: "bg-gray-100 text-gray-700",
-  organic: "bg-orange-100 text-orange-700",
-  electronics: "bg-purple-100 text-purple-700",
-  textiles: "bg-pink-100 text-pink-700"
-};
+import { MATERIAL_COLORS } from "../CollectionMap";
 
 type Deposit = {
   id: number;
@@ -80,7 +71,7 @@ export default function AvailableMaterials() {
     const mockDeposits = [
       {
         id: 101,
-        material_type: "plastic",
+        material_type: "plástico",
         created_date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
         quantity: 3,
         collection_point_id: 1,
@@ -89,7 +80,7 @@ export default function AvailableMaterials() {
       },
       {
         id: 102,
-        material_type: "glass",
+        material_type: "vidro",
         created_date: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
         quantity: 2,
         collection_point_id: 2,
@@ -98,7 +89,7 @@ export default function AvailableMaterials() {
       },
       {
         id: 103,
-        material_type: "cardboard",
+        material_type: "plástico",
         created_date: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
         quantity: 5,
         collection_point_id: 3,
@@ -193,7 +184,7 @@ export default function AvailableMaterials() {
               />
             </div>
             <div className="flex gap-2 flex-wrap">
-              {["", "plastic", "glass", "cardboard", "metal", "electronics", "textiles"].map((material) => (
+              {["", "plásitco", "vidro", "metal", "eletrônicos", "têxteis"].map((material) => (
                 <Button
                   key={material}
                   variant={filterMaterial === material ? "default" : "outline"}
