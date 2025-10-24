@@ -2,21 +2,21 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Leaf, 
-  MapPin, 
-  Recycle, 
-  Award, 
-  TrendingUp, 
+import {
+  MapPin,
+  Recycle,
+  Award,
+  TrendingUp,
   Users,
   ArrowRight,
   Heart,
   BarChart3,
   Package,
-  Route as RouteIcon
+  Route as RouteIcon,
 } from "lucide-react";
 import type { User } from "@/types/User";
 import { useUser } from "@/context/user-context-helpers";
+import logo from "../../public/ecohub.png";
 
 export default function Dashboard() {
   const { currentUser } = useUser();
@@ -34,12 +34,11 @@ export default function Dashboard() {
       case "business":
         return <BusinessDashboard />;
       case "municipal":
-        return <MunicipalDashboard  />;
+        return <MunicipalDashboard />;
       default:
         return <DefaultDashboard />;
     }
   };
-
 
   if (!currentUser) {
     return <WelcomePage />;
@@ -52,11 +51,9 @@ export default function Dashboard() {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             Olá, {currentUser.full_name}! 👋
           </h1>
-          <p className="text-gray-600">
-            Bem-vindo ao seu painel do EcoHub
-          </p>
+          <p className="text-gray-600">Bem-vindo ao seu painel do EcoHub</p>
         </div>
-        
+
         {getRoleSpecificContent()}
       </div>
     </div>
@@ -67,19 +64,24 @@ function WelcomePage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8">
-          <Leaf className="w-10 h-10 text-white" />
+        <div className="flex justify-center">
+          <img
+            src={logo}
+            alt="Logo do Ecohub"
+            className="h-40 object-cover"
+          />
         </div>
-        
+
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
           Bem-vindo ao EcoHub
         </h1>
-        
+
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          A plataforma que transforma a gestão de resíduos em pequenas cidades, 
-          conectando cidadãos, catadores, artesãos e empresas locais em um ecossistema sustentável.
+          A plataforma que transforma a gestão de resíduos em pequenas cidades,
+          conectando cidadãos, catadores, artesãos e empresas locais em um
+          ecossistema sustentável.
         </p>
-        
+
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card className="bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6 text-center">
@@ -92,7 +94,7 @@ function WelcomePage() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6 text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -104,7 +106,7 @@ function WelcomePage() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6 text-center">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -117,9 +119,12 @@ function WelcomePage() {
             </CardContent>
           </Card>
         </div>
-        
-        <Link to="/login"> 
-          <Button size="lg" className="bg-green-600 hover:bg-green-700 text-lg px-8 py-3">
+
+        <Link to="/login">
+          <Button
+            size="lg"
+            className="bg-green-600 hover:bg-green-700 text-lg px-8 py-3"
+          >
             Começar Agora
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
@@ -144,19 +149,21 @@ function CitizenDashboard({ user }: { user: User }) {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600">Total Ganho</p>
-                <p className="text-2xl font-bold text-gray-900">{user.total_points_earned || 0}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {user.total_points_earned || 0}
+                </p>
               </div>
               <TrendingUp className="w-6 h-6 text-blue-500" />
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -169,7 +176,7 @@ function CitizenDashboard({ user }: { user: User }) {
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
@@ -180,13 +187,13 @@ function CitizenDashboard({ user }: { user: User }) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <Link to="/pontos"> 
+              <Link to="/pontos">
                 <Button variant="outline" className="w-full justify-start">
                   <MapPin className="w-4 h-4 mr-2" />
                   Encontrar Pontos de Coleta
                 </Button>
               </Link>
-              <Link to="/recompensas"> 
+              <Link to="/recompensas">
                 <Button variant="outline" className="w-full justify-start">
                   <Award className="w-4 h-4 mr-2" />
                   Ver Recompensas Disponíveis
@@ -195,7 +202,7 @@ function CitizenDashboard({ user }: { user: User }) {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Dicas de Sustentabilidade</CardTitle>
@@ -203,9 +210,12 @@ function CitizenDashboard({ user }: { user: User }) {
           <CardContent>
             <div className="space-y-3">
               <div className="p-3 bg-green-50 rounded-lg">
-                <p className="text-sm text-green-800 font-medium">💡 Dica do Dia</p>
+                <p className="text-sm text-green-800 font-medium">
+                  💡 Dica do Dia
+                </p>
                 <p className="text-sm text-green-700 mt-1">
-                  Lave as embalagens antes de descartar para aumentar suas chances de reciclagem!
+                  Lave as embalagens antes de descartar para aumentar suas
+                  chances de reciclagem!
                 </p>
               </div>
             </div>
@@ -229,16 +239,16 @@ function WastePickerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-gray-600 mb-4">Veja os materiais que aguardam coleta</p>
-              <Link to="/materiais"> 
-                <Button size="sm">
-                  Ver Disponíveis
-                </Button>
+              <p className="text-gray-600 mb-4">
+                Veja os materiais que aguardam coleta
+              </p>
+              <Link to="/materiais">
+                <Button size="sm">Ver Disponíveis</Button>
               </Link>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -248,8 +258,10 @@ function WastePickerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-gray-600 mb-4">Planeje sua rota de coleta de hoje</p>
-              <Link to="/minhas-rotas"> 
+              <p className="text-gray-600 mb-4">
+                Planeje sua rota de coleta de hoje
+              </p>
+              <Link to="/minhas-rotas">
                 <Button variant="outline" size="sm">
                   Planejar Rota
                 </Button>
@@ -275,8 +287,10 @@ function ArtisanDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-gray-600 mb-4">Encontre materiais para seus projetos</p>
-              <Link to="/marketplace"> 
+              <p className="text-gray-600 mb-4">
+                Encontre materiais para seus projetos
+              </p>
+              <Link to="/marketplace">
                 <Button className="bg-purple-600 hover:bg-purple-700">
                   Explorar Materiais
                 </Button>
@@ -284,15 +298,17 @@ function ArtisanDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Meus Pedidos</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-gray-600 mb-4">Gerencie seus pedidos de materiais</p>
-              <Link to="/meus-pedidos"> 
+              <p className="text-gray-600 mb-4">
+                Gerencie seus pedidos de materiais
+              </p>
+              <Link to="/meus-pedidos">
                 <Button variant="outline" className="mt-4" size="sm">
                   Gerenciar Pedidos
                 </Button>
@@ -315,8 +331,10 @@ function BusinessDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-gray-600 mb-4">Confirme os resgates de pontos dos clientes</p>
-               <Link to="/resgates"> 
+              <p className="text-gray-600 mb-4">
+                Confirme os resgates de pontos dos clientes
+              </p>
+              <Link to="/resgates">
                 <Button className="bg-orange-500 hover:bg-orange-600">
                   Ver Resgates
                 </Button>
@@ -324,18 +342,18 @@ function BusinessDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Estatísticas</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center py-4">
-              <p className="text-gray-600 mb-4">Veja o impacto da sua participação</p>
-              <Link to="/estatisticas"> 
-                <Button variant="outline">
-                  Ver Estatísticas
-                </Button>
+              <p className="text-gray-600 mb-4">
+                Veja o impacto da sua participação
+              </p>
+              <Link to="/estatisticas">
+                <Button variant="outline">Ver Estatísticas</Button>
               </Link>
             </div>
           </CardContent>
@@ -360,7 +378,7 @@ function MunicipalDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Coletas Hoje</CardTitle>
@@ -372,7 +390,7 @@ function MunicipalDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Eficiência</CardTitle>
@@ -385,20 +403,20 @@ function MunicipalDashboard() {
           </CardContent>
         </Card>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Acesso Rápido</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4">
-            <Link to="/municipal-dashboard"> 
+            <Link to="/municipal-dashboard">
               <Button variant="outline" className="w-full">
                 <BarChart3 className="w-4 h-4 mr-2" />
                 Dashboard Completo
               </Button>
             </Link>
-            <Link to="/usuarios"> 
+            <Link to="/usuarios">
               <Button variant="outline" className="w-full">
                 <Users className="w-4 h-4 mr-2" />
                 Gerenciar Usuários
@@ -420,7 +438,7 @@ function DefaultDashboard() {
       <p className="text-gray-600 mb-6">
         Defina seu tipo de usuário para personalizar sua experiência
       </p>
-  <Link to="/setup"> 
+      <Link to="/setup">
         <Button className="bg-green-600 hover:bg-green-700">
           Configurar Perfil
         </Button>

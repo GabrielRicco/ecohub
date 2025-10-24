@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Leaf,
   Home,
   MapPin,
   Recycle,
@@ -25,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@/context/user-context-helpers";
+import logo from "../../public/ecohub.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -113,9 +113,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                <Leaf className="w-6 h-6 text-white" />
-              </div>
+              <img
+                src={logo}
+                alt="Logo do Ecohub"
+                className="h-15 object-contain"
+              />
               <div>
                 <h1 className="text-xl font-bold">EcoHub</h1>
                 <p className="text-xs text-gray-500">Gestão de Resíduos</p>
@@ -220,9 +222,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               © 2024 EcoHub. Para um Brasil mais sustentável.
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                <Leaf className="w-4 h-4 text-white" />
-              </div>
+              <img
+                src={logo}
+                alt="Logo do Ecohub"
+                className="h-10 object-contain"
+              />
               <p className="text-sm font-medium">EcoHub</p>
             </div>
           </div>
