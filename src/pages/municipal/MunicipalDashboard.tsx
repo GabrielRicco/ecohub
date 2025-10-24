@@ -47,29 +47,29 @@ export default function MunicipalDashboard() {
   useEffect(() => {
     // MOCK: Usuários
     const mockUsers: User[] = [
-      { id: 1, full_name: "João Silva", user_type: "collector" },
-      { id: 2, full_name: "Maria Souza", user_type: "artisan" },
-      { id: 3, full_name: "Carlos Lima", user_type: "business" },
-      { id: 4, full_name: "Ana Paula", user_type: "collector" },
-      { id: 5, full_name: "Lucas Rocha", user_type: "artisan" }
+      { id: 1, full_name: "João Silva", user_type: "coletor" },
+      { id: 2, full_name: "Maria Souza", user_type: "artesão" },
+      { id: 3, full_name: "Carlos Lima", user_type: "empresa" },
+      { id: 4, full_name: "Ana Paula", user_type: "coletor" },
+      { id: 5, full_name: "Lucas Rocha", user_type: "artesão" }
     ];
 
     // MOCK: Depósitos
     const mockDeposits: Deposit[] = [
-      { id: 101, material_type: "plastic", quantity: 12.5 },
-      { id: 102, material_type: "glass", quantity: 8.2 },
-      { id: 103, material_type: "cardboard", quantity: 15.7 },
+      { id: 101, material_type: "plástico", quantity: 12.5 },
+      { id: 102, material_type: "vidro", quantity: 8.2 },
+      { id: 103, material_type: "eletrônicos", quantity: 15.7 },
       { id: 104, material_type: "metal", quantity: 4.1 },
-      { id: 105, material_type: "plastic", quantity: 7.3 },
-      { id: 106, material_type: "glass", quantity: 5.6 }
+      { id: 105, material_type: "plástico", quantity: 7.3 },
+      { id: 106, material_type: "vidro", quantity: 5.6 }
     ];
 
     // MOCK: Pontos de coleta
     const mockPoints: CollectionPoint[] = [
       { id: 1, name: "Eco Ponto Central", address: "Av. Central, 1000", status: "full", capacity_level: 95 },
-      { id: 2, name: "Mercado Verde", address: "Rua das Flores, 123", status: "ok", capacity_level: 60 },
+      { id: 2, name: "Mercado Verde", address: "Rua das Flores, 123", status: "active", capacity_level: 60 },
       { id: 3, name: "Praça do Sol", address: "Praça do Sol", status: "maintenance", capacity_level: 100 },
-      { id: 4, name: "Ponto Leste", address: "Rua Leste, 45", status: "ok", capacity_level: 40 }
+      { id: 4, name: "Ponto Leste", address: "Rua Leste, 45", status: "active", capacity_level: 40 }
     ];
 
     const totalUsers = mockUsers.length;
@@ -218,7 +218,8 @@ export default function MunicipalDashboard() {
                                 <p className="text-sm text-gray-500">{point.address}</p>
                             </div>
                             <div className="flex gap-2">
-                                <Badge variant={point.status === 'full' ? "destructive" : "secondary"}>{point.status}</Badge>
+                                <Badge variant={point.status === 'full' ? "destructive" : "secondary"}>{
+                             point.status === 'maintenance' ? 'Manutenção' : 'Inativo'}</Badge>
                                 <Badge variant="outline">Capacidade: {point.capacity_level}%</Badge>
                             </div>
                         </div>
