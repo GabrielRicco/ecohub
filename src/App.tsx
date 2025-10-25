@@ -15,29 +15,32 @@ import Redemptions from './pages/business/Redemptions';
 import BusinessStats from './pages/business/BusinessStats';
 import MunicipalDashboard from './pages/municipal/MunicipalDashboard';
 import UserManagement from './pages/municipal/UserManagement';
+import { ToastProvider } from './components/ui/toast';
 
 export function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/pontos" element={<CollectionMap />} />
-          <Route path='/meus-pontos' element={<MyPoints />} />
-          <Route path='/recompensas' element={<Rewards />} />
-          <Route path='/setup' element={<UserSetup />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/perfil' element={<UserProfile />} />
-          <Route path='/materiais' element={<AvailableMaterials />} />
-          <Route path='/minhas-rotas' element={<MyRoutes />} />
-          <Route path='/marketplace' element={<MaterialMarketplace />} />
-          <Route path='/meus-pedidos' element={<MyRequests />} />
-          <Route path='/resgates' element={<Redemptions />} />
-          <Route path='/estatisticas' element={<BusinessStats />} />
-          <Route path='/municipal-dashboard' element={<MunicipalDashboard />} />
-          <Route path='/usuarios' element={<UserManagement />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/pontos" element={<CollectionMap />} />
+            <Route path='/meus-pontos' element={<MyPoints />} />
+            <Route path='/recompensas' element={<Rewards />} />
+            <Route path='/setup' element={<UserSetup />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/perfil' element={<UserProfile />} />
+            <Route path='/materiais' element={<AvailableMaterials />} />
+            <Route path='/minhas-rotas' element={<MyRoutes />} />
+            <Route path='/marketplace' element={<MaterialMarketplace />} />
+            <Route path='/meus-pedidos' element={<MyRequests />} />
+            <Route path='/resgates' element={<Redemptions />} />
+            <Route path='/estatisticas' element={<BusinessStats />} />
+            <Route path='/municipal-dashboard' element={<MunicipalDashboard />} />
+            <Route path='/usuarios' element={<UserManagement />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }

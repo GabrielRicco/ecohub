@@ -3,13 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { 
   MapPin, 
   Navigation, 
   Clock, 
   Recycle, 
   Search,
+  Plus,
+  PackagePlus,
 } from "lucide-react";
+import { useUser } from "@/context/user-context-helpers";
+import { useToast } from "@/hooks/use-toast";
 
 type CollectionPoint = {
   id: number;
@@ -28,6 +36,7 @@ type UserLocation = {
   lng: number;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const MATERIAL_COLORS = {
   plástico: "bg-blue-100 text-blue-700",
   vidro: "bg-green-100 text-green-700", 
@@ -45,6 +54,8 @@ const STATUS_COLORS = {
 };
 
 export default function CollectionMap() {
+  const { currentUser } = useUser();
+  const { toast } = useToast();
   const [collectionPoints, setCollectionPoints] = useState<CollectionPoint[]>([]);
   const [filteredPoints, setFilteredPoints] = useState<CollectionPoint[]>([]);
   const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(null);
@@ -52,6 +63,26 @@ export default function CollectionMap() {
   const [filterMaterial, setFilterMaterial] = useState("");
   const [loading, setLoading] = useState(true);
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  
+  // Estados para criar novo ponto
+  const [showCreatePoint, setShowCreatePoint] = useState(false);
+  const [newPoint, setNewPoint] = useState({
+    name: "",
+    address: "",
+    latitude: "",
+    longitude: "",
+    accepted_materials: [] as string[],
+    operating_hours: "",
+  });
+  
+  // Estados para registrar depósito
+  const [showRegisterDeposit, setShowRegisterDeposit] = useState(false);
+  const [depositPoint, setDepositPoint] = useState<CollectionPoint | null>(null);
+  const [newDeposit, setNewDeposit] = useState({
+    material_type: "",
+    quantity: "",
+    notes: "",
+  });
 
 
   // MOCK: Pontos de coleta
@@ -182,6 +213,88 @@ export default function CollectionMap() {
     window.open(url, '_blank');
   };
 
+  const handleCreatePoint = () => {
+    if (!newPoint.name || !newPoint.address || !newPoint.latitude || !newPoint.longitude) {
+      toast({
+        title: "Campos obrigatórios faltando",
+        description: "Por favor, preencha todos os campos obrigatórios",
+        variant: "error",
+      });
+      return;
+    }
+
+    const point: CollectionPoint = {
+      id: Date.now(),
+      name: newPoint.name,
+      address: newPoint.address,
+      latitude: parseFloat(newPoint.latitude),
+      longitude: parseFloat(newPoint.longitude),
+      accepted_materials: newPoint.accepted_materials,
+      status: "active",
+      capacity_level: 0,
+      operating_hours: newPoint.operating_hours || undefined,
+    };
+
+    setCollectionPoints(prev => [...prev, point]);
+    setShowCreatePoint(false);
+    setNewPoint({
+      name: "",
+      address: "",
+      latitude: "",
+      longitude: "",
+      accepted_materials: [],
+      operating_hours: "",
+    });
+    toast({
+      title: "Sucesso!",
+      description: "Ponto de coleta criado com sucesso!",
+      variant: "success",
+    });
+  };
+
+  const handleRegisterDeposit = () => {
+    if (!depositPoint || !newDeposit.material_type || !newDeposit.quantity) {
+      toast({
+        title: "Campos obrigatórios faltando",
+        description: "Por favor, preencha todos os campos obrigatórios",
+        variant: "error",
+      });
+      return;
+    }
+
+    // Simula registro do depósito
+    console.log("Depósito registrado:", {
+      point_id: depositPoint.id,
+      user_id: currentUser?.id,
+      material_type: newDeposit.material_type,
+      quantity: parseFloat(newDeposit.quantity),
+      notes: newDeposit.notes,
+      created_date: new Date().toISOString(),
+    });
+
+    setShowRegisterDeposit(false);
+    setDepositPoint(null);
+    setNewDeposit({
+      material_type: "",
+      quantity: "",
+      notes: "",
+    });
+    toast({
+      title: "Depósito registrado!",
+      description: "Você ganhou pontos pelo seu depósito.",
+      variant: "success",
+    });
+  };
+
+  const toggleMaterial = (material: string) => {
+    setNewPoint(prev => ({
+      ...prev,
+      accepted_materials: prev.accepted_materials.includes(material)
+        ? prev.accepted_materials.filter(m => m !== material)
+        : [...prev.accepted_materials, material]
+    }));
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -196,13 +309,111 @@ export default function CollectionMap() {
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Pontos de Coleta
-          </h1>
-          <p className="text-gray-600">
-            Encontre o ponto de coleta mais próximo e descarte seus resíduos corretamente
-          </p>
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Pontos de Coleta
+            </h1>
+            <p className="text-gray-600">
+              Encontre o ponto de coleta mais próximo e descarte seus resíduos corretamente
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {(currentUser?.user_type === 'municipal' || currentUser?.user_type === 'citizen' || currentUser?.user_type === 'business') && (
+              <Dialog open={showCreatePoint} onOpenChange={setShowCreatePoint}>
+                <DialogTrigger asChild>
+                  <Button className="bg-green-500 hover:bg-green-600">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Novo Ponto
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Criar Novo Ponto de Coleta</DialogTitle>
+                    <DialogDescription>
+                      Adicione um novo ponto de coleta ao sistema
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Nome do Ponto *</Label>
+                      <Input
+                        id="name"
+                        placeholder="Ex: Eco Ponto Central"
+                        value={newPoint.name}
+                        onChange={(e) => setNewPoint(prev => ({ ...prev, name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Endereço *</Label>
+                      <Input
+                        id="address"
+                        placeholder="Ex: Rua das Flores, 123"
+                        value={newPoint.address}
+                        onChange={(e) => setNewPoint(prev => ({ ...prev, address: e.target.value }))}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="latitude">Latitude *</Label>
+                        <Input
+                          id="latitude"
+                          type="number"
+                          step="any"
+                          placeholder="-23.5505"
+                          value={newPoint.latitude}
+                          onChange={(e) => setNewPoint(prev => ({ ...prev, latitude: e.target.value }))}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="longitude">Longitude *</Label>
+                        <Input
+                          id="longitude"
+                          type="number"
+                          step="any"
+                          placeholder="-46.6333"
+                          value={newPoint.longitude}
+                          onChange={(e) => setNewPoint(prev => ({ ...prev, longitude: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="hours">Horário de Funcionamento</Label>
+                      <Input
+                        id="hours"
+                        placeholder="Ex: 08:00 - 18:00"
+                        value={newPoint.operating_hours}
+                        onChange={(e) => setNewPoint(prev => ({ ...prev, operating_hours: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Materiais Aceitos *</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {["plástico", "vidro", "papelão", "metal", "orgânico", "eletrônicos", "têxteis"].map((material) => (
+                          <Badge
+                            key={material}
+                            variant={newPoint.accepted_materials.includes(material) ? "default" : "outline"}
+                            className="cursor-pointer"
+                            onClick={() => toggleMaterial(material)}
+                          >
+                            {material}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex gap-2 pt-4">
+                      <Button variant="outline" onClick={() => setShowCreatePoint(false)} className="flex-1">
+                        Cancelar
+                      </Button>
+                      <Button onClick={handleCreatePoint} className="flex-1 bg-green-500 hover:bg-green-600">
+                        Criar Ponto
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
         </div>
 
         {/* Search and Filter */}
@@ -326,17 +537,32 @@ export default function CollectionMap() {
                               {point.operating_hours}
                             </p>
                           )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openInMaps(point);
-                            }}
-                          >
-                            <Navigation className="w-3 h-3 mr-1" />
-                            Ir
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDepositPoint(point);
+                                setShowRegisterDeposit(true);
+                              }}
+                              className="text-green-600 border-green-600 hover:bg-green-50"
+                            >
+                              <PackagePlus className="w-3 h-3 mr-1" />
+                              Depositar
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openInMaps(point);
+                              }}
+                            >
+                              <Navigation className="w-3 h-3 mr-1" />
+                              Ir
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -393,6 +619,17 @@ export default function CollectionMap() {
                   <div className="pt-4 space-y-2">
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700"
+                      onClick={() => {
+                        setDepositPoint(selectedPoint);
+                        setShowRegisterDeposit(true);
+                      }}
+                    >
+                      <PackagePlus className="w-4 h-4 mr-2" />
+                      Registrar Depósito
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full"
                       onClick={() => openInMaps(selectedPoint)}
                     >
                       <Navigation className="w-4 h-4 mr-2" />
@@ -417,6 +654,79 @@ export default function CollectionMap() {
           </div>
         </div>
       </div>
+
+      {/* Dialog para Registrar Depósito */}
+      <Dialog open={showRegisterDeposit} onOpenChange={setShowRegisterDeposit}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Registrar Depósito</DialogTitle>
+            <DialogDescription>
+              Registre o material que você está depositando em {depositPoint?.name}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="material_type">Tipo de Material *</Label>
+              <Select
+                value={newDeposit.material_type}
+                onValueChange={(value) => setNewDeposit(prev => ({ ...prev, material_type: value }))}
+              >
+                <SelectTrigger id="material_type">
+                  <SelectValue placeholder="Selecione o material" />
+                </SelectTrigger>
+                <SelectContent>
+                  {depositPoint?.accepted_materials?.map((material) => (
+                    <SelectItem key={material} value={material}>
+                      {material}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="quantity">Quantidade (kg) *</Label>
+              <Input
+                id="quantity"
+                type="number"
+                step="0.1"
+                min="0"
+                placeholder="Ex: 2.5"
+                value={newDeposit.quantity}
+                onChange={(e) => setNewDeposit(prev => ({ ...prev, quantity: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="notes">Observações (opcional)</Label>
+              <Textarea
+                id="notes"
+                placeholder="Descreva o material depositado..."
+                value={newDeposit.notes}
+                onChange={(e) => setNewDeposit(prev => ({ ...prev, notes: e.target.value }))}
+                rows={3}
+              />
+            </div>
+            <div className="flex gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowRegisterDeposit(false);
+                  setDepositPoint(null);
+                }}
+                className="flex-1"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleRegisterDeposit}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+                disabled={!newDeposit.material_type || !newDeposit.quantity}
+              >
+                Registrar Depósito
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
