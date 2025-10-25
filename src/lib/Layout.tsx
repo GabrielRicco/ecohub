@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
@@ -12,6 +12,7 @@ import {
   User as UserIcon,
   Package,
   Route as RouteIcon,
+  Megaphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -25,11 +26,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@/context/user-context-helpers";
 import logo from "../../public/ecohub.png";
+import AdvertiserForm from "@/components/AdvertiserForm";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [advertiserFormOpen, setAdvertiserFormOpen] = useState(false);
   const { currentUser, logout } = useUser();
 
   const handleLogout = () => {
@@ -218,9 +221,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <footer className="bg-white border-t border-green-100 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-500">
-              © 2025 EcoHub. Para um Brasil mais sustentável.
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <p className="text-sm text-gray-500">
+                © 2025 EcoHub. Para um Brasil mais sustentável.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAdvertiserFormOpen(true)}
+                className="text-green-600 border-green-600 hover:bg-green-50"
+              >
+                <Megaphone className="w-4 h-4 mr-2" />
+                Anuncie Conosco
+              </Button>
+            </div>
             <div className="flex items-center gap-3">
               <img
                 src={logo}
@@ -232,6 +246,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+
+      <AdvertiserForm 
+        open={advertiserFormOpen} 
+        onOpenChange={setAdvertiserFormOpen} 
+      />
     </div>
   );
 }

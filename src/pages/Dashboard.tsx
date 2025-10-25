@@ -17,6 +17,7 @@ import {
 import type { User } from "@/types/User";
 import { useUser } from "@/context/user-context-helpers";
 import logo from "../../public/ecohub.png";
+import AnnouncementsCarousel from "@/components/AnnouncementsCarousel";
 
 export default function Dashboard() {
   const { currentUser } = useUser();
@@ -222,6 +223,8 @@ function CitizenDashboard({ user }: { user: User }) {
           </CardContent>
         </Card>
       </div>
+
+      <AnnouncementsCarousel />
     </div>
   );
 }
@@ -270,6 +273,8 @@ function WastePickerDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <AnnouncementsCarousel />
     </div>
   );
 }
@@ -317,6 +322,8 @@ function ArtisanDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <AnnouncementsCarousel />
     </div>
   );
 }
@@ -359,6 +366,8 @@ function BusinessDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <AnnouncementsCarousel />
     </div>
   );
 }
@@ -425,6 +434,8 @@ function MunicipalDashboard() {
           </div>
         </CardContent>
       </Card>
+
+      <AnnouncementsCarousel />
     </div>
   );
 }
